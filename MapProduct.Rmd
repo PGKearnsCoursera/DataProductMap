@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+author: "PeterKearns"
+date: "February 15, 2018"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Leaflet Map
+
+For week 2 we had the assignment to create an interactive map with the leaflet package.  The follwing does so.
+
+### Load Package 
+```{r leaflet}
+
+library(leaflet)
+library(maps)
+```
+
+### Generate data to be ploted
+Not shown is the creation of a dataframe containing the state capitols and lat long of them.  The Values below give the structure of that dataframe
+
+```{r capitolData,echo=FALSE}
+mapStatesMarkers = data.frame(popup = c("Montgomery","Juneau","Phoenix","Little Rock","Sacramento","Denver","Hartford","Dover","Tallahassee","Atlanta","Honolulu","Boise","Springfield","Indianapolis","Des Moines","Topeka","Frankfort","Baton Rouge","Augusta","Annapolis","Boston","Lansing","Saint Paul","Jackson","Jefferson City","Helana","Lincoln","Carson City","Concord","Trenton","Santa Fe","Albany","Raleigh","Bismarck","Columbus","Oklahoma City","Salem","Harrisburg","Providence","Columbia","Pierre","Nashville","Austin","Salt Lake City","Montpelier","Richmond","Olympia","Charleston","Madison","Cheyenne"), lat = c(32.361538,58.301935,33.448457,34.736009,38.555605,39.7391667,41.767,39.161921,30.4518,33.76,21.30895,43.613739,39.78325,39.790942,41.590939,39.04,38.197274,30.45809,44.323535,38.972945,42.2352,42.7335,44.95,32.32,38.572954,46.595805,40.809868,39.160949,43.220093,40.221741,35.667231,42.659829,35.771,48.813343,39.962245,35.482309,44.931109,40.269789,41.82355,34,44.367966,36.165,30.266667,40.7547,44.26639,37.54,47.042418,38.349497,43.074722,41.145548), lng = c(-86.279118,-134.41974,-112.073844,-92.331122,-121.468926,-104.984167,-72.677,-75.526755,-84.27277,-84.39,-157.826182,-116.237651,-89.650373,-86.147685,-93.620866,-95.69,-84.86311,-91.140229,-69.765261,-76.501157,-71.0275,-84.5467,-93.094,-90.207,-92.189283,-112.027031,-96.675345,-119.753877,-71.549127,-74.756138,-105.964575,-73.781339,-78.638,-100.779004,-83.000647,-97.534994,-123.029159,-76.875613,-71.422132,-81.035,-100.336378,-86.784,-97.75,-111.892622,-72.57194,-77.46,-122.893077,-81.633294,-89.384444,-104.802042))
+str(mapStatesMarkers)
+```
+
+
+##Actual Maping
+
+This creates a colored map of the USA with popups showing the location of the state capitols
+```{r statemap}
+library(maps)
+
+mapStates = map("state", fill = TRUE, plot = FALSE)
+mapStates %>% leaflet() %>% addTiles()%>%
+  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE) %>% addMarkers(lat = mapStatesMarkers$lat, lng = mapStatesMarkers$lng,popup = mapStatesMarkers$popup, options = popupOptions(style = list(
+        "color" = "black", "font-size" = "20px"))) 
+
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
